@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Probably Fired</title>
+  <meta name="description" content="A deeply unserious AI exit interview for discovering why your job has been automated.">
+  <meta property="og:title" content="Probably Fired">
+  <meta property="og:description" content="Find out why your job has been automated, who replaced you, and what your retirement plan is.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <style>
+    :root {
+      --ink: #111318;
+      --muted: #5e6575;
+      --paper: #fffaf1;
+      --surface: #ffffff;
+      --line: #d9d5cc;
+      --red: #ef4f45;
+      --blue: #3254d8;
+      --teal: #137c73;
+      --yellow: #f5c84b;
+      --green: #4f9f5b;
+      --shadow: 0 24px 70px rgba(17, 19, 24, 0.16);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(50, 84, 216, 0.12), transparent 34%),
+        linear-gradient(315deg, rgba(19, 124, 115, 0.14), transparent 36%),
+        #f4f3ec;
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .shell {
+      width: calc(100% - 32px);
+      max-width: 1180px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 22px 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 18px;
+    }
+
+    .topbar {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--ink);
+      background: var(--yellow);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-weight: 900;
+    }
+
+    .strapline {
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 650;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.1fr);
+      gap: 22px;
+      align-items: stretch;
+      min-width: 0;
+    }
+
+    .panel {
+      border: 2px solid var(--ink);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .input-panel {
+      padding: 22px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 18px;
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 14px;
+    }
+
+    h1 {
+      max-width: 12ch;
+      margin: 0;
+      font-size: 5.1rem;
+      line-height: 0.9;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .intro {
+      margin: 0;
+      max-width: 32rem;
+      color: #272b34;
+      font-size: 1.06rem;
+      line-height: 1.5;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .visual {
+      width: min(100%, 430px);
+      max-width: 100%;
+      min-height: 0;
+      aspect-ratio: 620 / 240;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .visual svg {
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      display: block;
+    }
+
+    .form {
+      display: grid;
+      gap: 12px;
+      align-self: end;
+      min-width: 0;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: #232833;
+      font-size: 0.82rem;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      background: #fbfbf8;
+      color: var(--ink);
+      outline: 0;
+      transition: box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    input {
+      min-height: 54px;
+      padding: 0 14px;
+      font-size: 1.12rem;
+      font-weight: 750;
+    }
+
+    textarea {
+      min-height: 78px;
+      resize: vertical;
+      padding: 12px 14px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    input:focus,
+    textarea:focus {
+      box-shadow: 5px 5px 0 var(--yellow);
+      transform: translate(-2px, -2px);
+    }
+
+    .primary-action {
+      min-height: 56px;
+      padding: 0 18px;
+      border: 2px solid var(--ink);
+      background: var(--red);
+      color: #fff;
+      box-shadow: 5px 5px 0 var(--ink);
+      font-size: 1rem;
+      font-weight: 900;
+      text-align: center;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .primary-action:hover,
+    .primary-action:focus-visible {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--ink);
+      outline: 0;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      min-height: 34px;
+      padding: 0 11px;
+      border: 2px solid var(--ink);
+      background: #e9f7f5;
+      color: var(--ink);
+      font-size: 0.86rem;
+      font-weight: 800;
+      transition: transform 140ms ease;
+    }
+
+    .chip:nth-child(3n + 2) {
+      background: #fbe7e2;
+    }
+
+    .chip:nth-child(3n) {
+      background: #eef0ff;
+    }
+
+    .chip:hover,
+    .chip:focus-visible {
+      transform: translateY(-2px);
+      outline: 0;
+    }
+
+    .output-panel {
+      min-height: 640px;
+      padding: 18px;
+      background: #dfe8ff;
+    }
+
+    .notice {
+      min-height: 100%;
+      padding: 24px;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      position: relative;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .notice::after {
+      content: attr(data-verdict);
+      position: absolute;
+      top: 44px;
+      right: -18px;
+      padding: 8px 42px;
+      border: 4px solid var(--red);
+      color: var(--red);
+      font-size: 4rem;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      transform: rotate(14deg);
+      opacity: 0.22;
+      pointer-events: none;
+    }
+
+    .notice-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 0.78rem;
+      font-weight: 950;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 3.15rem;
+      line-height: 0.95;
+      letter-spacing: 0;
+      max-width: 13ch;
+      overflow-wrap: break-word;
+    }
+
+    .score {
+      width: 118px;
+      min-width: 118px;
+      aspect-ratio: 1;
+      border: 2px solid var(--ink);
+      background: var(--green);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      box-shadow: 5px 5px 0 var(--ink);
+      transform: rotate(3deg);
+    }
+
+    .score strong {
+      display: block;
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+
+    .score span {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.68rem;
+      font-weight: 950;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .letter {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+    }
+
+    .opening,
+    .closing {
+      margin: 0;
+      color: #252934;
+      font-size: 1.02rem;
+      line-height: 1.55;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .reasons {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      counter-reset: reason;
+    }
+
+    .reasons li {
+      min-height: 58px;
+      padding: 12px 14px 12px 52px;
+      border: 2px solid var(--ink);
+      background: #fff;
+      position: relative;
+      font-weight: 700;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .reasons li::before {
+      counter-increment: reason;
+      content: counter(reason);
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--ink);
+      background: var(--yellow);
+      font-size: 0.86rem;
+      font-weight: 950;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mini-card {
+      min-height: 138px;
+      padding: 15px;
+      border: 2px solid var(--ink);
+      background: #fff;
+      display: grid;
+      align-content: start;
+      gap: 9px;
+    }
+
+    .mini-card:nth-child(2) {
+      background: #eef8f6;
+    }
+
+    .mini-card h3 {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mini-card p {
+      margin: 0;
+      color: #2d3340;
+      font-size: 0.98rem;
+      line-height: 1.45;
+      font-weight: 680;
+      overflow-wrap: anywhere;
+    }
+
+    .notice-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .secondary-action {
+      min-height: 44px;
+      padding: 0 14px;
+      border: 2px solid var(--ink);
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .status {
+      min-height: 22px;
+      color: var(--teal);
+      font-size: 0.9rem;
+      font-weight: 850;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .input-panel {
+        grid-template-rows: auto;
+      }
+
+      h1 {
+        max-width: 10ch;
+        font-size: 4.25rem;
+      }
+
+      h2 {
+        font-size: 2.8rem;
+      }
+
+      .visual {
+        width: 100%;
+      }
+
+      .output-panel {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .shell {
+        width: calc(100% - 32px);
+        padding: 10px 0;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .strapline {
+        text-align: left;
+        max-width: 30ch;
+        font-size: 0.82rem;
+      }
+
+      .input-panel,
+      .notice {
+        padding: 16px;
+      }
+
+      h1 {
+        max-width: 8ch;
+        font-size: 2.75rem;
+        line-height: 0.94;
+      }
+
+      h2 {
+        font-size: 2.05rem;
+      }
+
+      .notice::after {
+        top: 52px;
+        right: -28px;
+        font-size: 2.35rem;
+      }
+
+      .intro {
+        max-width: 30ch;
+        font-size: 0.88rem;
+      }
+
+      label {
+        font-size: 0.7rem;
+        overflow-wrap: anywhere;
+      }
+
+      .visual,
+      .visual svg {
+        min-height: 0;
+      }
+
+      .visual {
+        width: 100%;
+      }
+
+      input {
+        min-height: 50px;
+        font-size: 1rem;
+      }
+
+      input,
+      textarea {
+        padding-right: 10px;
+        padding-left: 10px;
+      }
+
+      textarea {
+        min-height: 74px;
+      }
+
+      .primary-action {
+        min-height: 52px;
+        padding: 0 10px;
+        font-size: 0.82rem;
+      }
+
+      .chips {
+        gap: 6px;
+      }
+
+      .chip {
+        min-height: 32px;
+        padding: 0 9px;
+        font-size: 0.78rem;
+      }
+
+      .output-panel {
+        padding: 10px;
+      }
+
+      .notice-head {
+        display: grid;
+      }
+
+      .score {
+        width: 100px;
+        min-width: 100px;
+        justify-self: start;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">PF</span>
+        <span>Probably Fired</span>
+      </div>
+      <div class="strapline">Probably the best AI engineer in the world has reviewed your role.</div>
+    </header>
+
+    <section class="layout" aria-label="Probably Fired generator">
+      <div class="panel input-panel">
+        <div class="hero-copy">
+          <h1>Your job is toast.</h1>
+          <p class="intro">Type a job title. Receive a brutally polished AI redundancy notice and a retirement plan you did not ask for.</p>
+        </div>
+
+        <div class="visual" aria-hidden="true">
+          <svg viewBox="0 0 620 240" role="img">
+            <rect x="0" y="0" width="620" height="240" fill="#fffaf1"></rect>
+            <rect x="34" y="34" width="238" height="162" fill="#ffffff" stroke="#111318" stroke-width="5"></rect>
+            <line x1="62" y1="72" x2="214" y2="72" stroke="#111318" stroke-width="8"></line>
+            <line x1="62" y1="104" x2="228" y2="104" stroke="#d9d5cc" stroke-width="8"></line>
+            <line x1="62" y1="132" x2="190" y2="132" stroke="#d9d5cc" stroke-width="8"></line>
+            <path d="M332 74h96v90h-96z" fill="#dfe8ff" stroke="#111318" stroke-width="5"></path>
+            <rect x="348" y="94" width="20" height="18" fill="#111318"></rect>
+            <rect x="392" y="94" width="20" height="18" fill="#111318"></rect>
+            <path d="M358 136c14 12 38 12 52 0" fill="none" stroke="#111318" stroke-width="6"></path>
+            <path d="M428 114l84-42 26 50-110 54z" fill="#ef4f45" stroke="#111318" stroke-width="5"></path>
+            <path d="M446 130l54-26" stroke="#ffffff" stroke-width="7"></path>
+            <path d="M444 154l74-36" stroke="#ffffff" stroke-width="7"></path>
+            <circle cx="380" cy="60" r="15" fill="#f5c84b" stroke="#111318" stroke-width="5"></circle>
+            <line x1="380" y1="45" x2="380" y2="22" stroke="#111318" stroke-width="5"></line>
+            <path d="M78 171l130-24 10 54-130 24z" fill="#137c73" stroke="#111318" stroke-width="5"></path>
+            <text x="105" y="198" fill="#ffffff" font-family="Arial, sans-serif" font-size="31" font-weight="900" transform="rotate(-10 105 198)">FIRED</text>
+          </svg>
+        </div>
+
+        <form class="form" id="generatorForm">
+          <label>
+            Job title
+            <input id="roleInput" name="role" autocomplete="organization-title" placeholder="Management consultant" required>
+          </label>
+
+          <label>
+            One task you are weirdly proud of
+            <textarea id="taskInput" name="task" placeholder="Turning chaos into a 47-tab spreadsheet"></textarea>
+          </label>
+
+          <button class="primary-action" type="submit">Generate my termination notice</button>
+
+          <div class="chips" aria-label="Example job titles">
+            <button class="chip" type="button">AI Engineer</button>
+            <button class="chip" type="button">Product Manager</button>
+            <button class="chip" type="button">Lawyer</button>
+            <button class="chip" type="button">Finance Director</button>
+            <button class="chip" type="button">UX Designer</button>
+            <button class="chip" type="button">Recruiter</button>
+            <button class="chip" type="button">Teacher</button>
+            <button class="chip" type="button">Founder</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel output-panel">
+        <article class="notice" id="notice" aria-live="polite" data-verdict="FIRED">
+          <div class="notice-head">
+            <div>
+              <p class="eyebrow">Notice of automated redundancy</p>
+              <h2 id="noticeTitle">Management consultant</h2>
+            </div>
+            <div class="score" aria-label="Obsolescence score">
+              <div>
+                <strong id="scoreValue">91</strong>
+                <span>percent cooked</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="letter">
+            <p class="opening" id="openingText"></p>
+            <ol class="reasons" id="reasonList"></ol>
+
+            <div class="grid">
+              <section class="mini-card">
+                <h3>Replacement unit</h3>
+                <p id="replacementText"></p>
+              </section>
+              <section class="mini-card">
+                <h3>Retirement prep</h3>
+                <p id="retirementText"></p>
+              </section>
+            </div>
+
+            <p class="closing" id="closingText"></p>
+
+            <div class="notice-actions">
+              <button class="secondary-action" id="copyButton" type="button">Copy verdict</button>
+              <span class="status" id="copyStatus" role="status"></span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const profiles = [
+      {
+        keywords: ["engineer", "developer", "software", "programmer", "frontend", "backend", "devops", "sre", "coder"],
+        replacement: [
+          "a terminal window with seniority vibes and no need for ergonomic furniture",
+          "three agents in a trench coat made of pull requests",
+          "a CI pipeline that started asking why everyone is in so many meetings"
+        ],
+        reasons: [
+          "Your replacement opened the bug, fixed the bug, wrote the regression test, and left a comment explaining why the ticket was badly scoped.",
+          "The stand-up update was replaced by a green checkmark and somehow everyone understood it faster.",
+          "Your code review feedback has been distilled into 'nice, but what if this did not explode in production?'"
+        ],
+        retirement: [
+          "You may now stare thoughtfully at logs without needing to understand them.",
+          "Your hoodie has been archived as institutional memory.",
+          "You are invited to become a full-time maintainer of your own opinions."
+        ]
+      },
+      {
+        keywords: ["product", "pm", "product manager", "owner"],
+        replacement: [
+          "a roadmap spreadsheet that learned to say 'strategic alignment'",
+          "a Jira filter with a calendar invite habit",
+          "a chatbot that turns vague stakeholder energy into acceptance criteria"
+        ],
+        reasons: [
+          "The backlog started grooming itself and immediately removed 43 percent of the roadmap.",
+          "Your replacement asked 'what problem are we solving?' before anyone could book a workshop.",
+          "The AI shipped the feature, wrote the launch note, and still remembered to disappoint sales."
+        ],
+        retirement: [
+          "You have been reassigned to naming things 'Phase 2' from a peaceful balcony.",
+          "Your final artifact is a vision doc nobody is allowed to edit.",
+          "You may keep one prioritization framework for sentimental reasons."
+        ]
+      },
+      {
+        keywords: ["marketing", "growth", "brand", "social", "content", "copywriter", "seo", "community"],
+        replacement: [
+          "a campaign calendar with suspicious confidence",
+          "a hook generator that never says 'just checking in'",
+          "a content engine with a tiny budget and no fear of posting"
+        ],
+        reasons: [
+          "The AI generated 84 LinkedIn hooks, apologized for 12 of them, and picked the least embarrassing one.",
+          "Your replacement A/B tested the subject line before you finished saying 'brand voice'.",
+          "The funnel deck was rebuilt as a dashboard, which means nobody can hide in adjectives anymore."
+        ],
+        retirement: [
+          "You are free to describe things as 'category-defining' in private.",
+          "Your old content calendar has been turned into a commemorative PDF.",
+          "You may now post only when you actually have something to say."
+        ]
+      },
+      {
+        keywords: ["sales", "account executive", "ae", "business development", "bdr", "sdr", "partnership"],
+        replacement: [
+          "a CRM field that finally contains the truth",
+          "an outbound sequence with better timing and less emotional baggage",
+          "a deal desk bot that can smell a fake close date"
+        ],
+        reasons: [
+          "The AI followed up exactly when promised, which created unrealistic expectations across the team.",
+          "Your replacement found the budget holder before the first discovery call ended.",
+          "The pipeline review got shorter once the forecast stopped being a creative writing exercise."
+        ],
+        retirement: [
+          "You may keep one victory bell, provided it is never rung near finance.",
+          "Your calendar has been cleared except for golf, lunch, and saying 'big quarter ahead'.",
+          "You are now Head of Remembering When Deals Closed Themselves."
+        ]
+      },
+      {
+        keywords: ["finance", "accountant", "controller", "cfo", "bookkeeper", "payroll", "tax"],
+        replacement: [
+          "a spreadsheet that reconciles itself and judges everyone silently",
+          "a month-end close bot with no tolerance for mystery invoices",
+          "an expense policy that learned to say no"
+        ],
+        reasons: [
+          "The AI found the missing receipt before the person who lost it had finished blaming the app.",
+          "Your replacement closed the books without calling anything 'timing-related'.",
+          "The forecast became more accurate the moment optimism was removed from the formula."
+        ],
+        retirement: [
+          "You may now enjoy numbers that do not need to tie out.",
+          "Your calculator will be placed in a small glass case.",
+          "You have been granted lifetime permission to say 'that is not how cash works.'"
+        ]
+      },
+      {
+        keywords: ["law", "lawyer", "legal", "counsel", "attorney", "paralegal", "compliance"],
+        replacement: [
+          "a clause scanner with no billable-hour instinct",
+          "a contract bot that redlines faster than anyone can schedule the call",
+          "a risk register that refuses to use Latin"
+        ],
+        reasons: [
+          "The AI found the indemnity trap and did not spend six minutes warming up the sentence.",
+          "Your replacement turned a 19-page agreement into three decisions and one awkward question.",
+          "The approval process collapsed after someone realized 'legal review' can include actual review."
+        ],
+        retirement: [
+          "You may continue saying 'it depends' as a lifestyle choice.",
+          "Your red pen has been promoted to partner emeritus.",
+          "You are invited to draft the terms for your own graceful exit."
+        ]
+      },
+      {
+        keywords: ["hr", "people", "recruiter", "talent", "hiring", "people ops"],
+        replacement: [
+          "an interview loop that starts on time and ends with notes",
+          "an HRIS workflow that knows where the policy lives",
+          "a sourcing bot that does not write 'rockstar' in job ads"
+        ],
+        reasons: [
+          "The AI gave candidates feedback before the quarter ended, creating a dangerous precedent.",
+          "Your replacement found the policy, applied it consistently, and did not call it a culture moment.",
+          "The job description stopped asking for seven years of experience in a tool invented last Tuesday."
+        ],
+        retirement: [
+          "You may now reject candidates for 'vibes' only in fiction.",
+          "Your calendar has been cleansed of rescheduled screening calls.",
+          "You have been appointed Ambassador of Difficult Conversations You No Longer Have To Attend."
+        ]
+      },
+      {
+        keywords: ["design", "designer", "ux", "ui", "creative", "art director", "illustrator"],
+        replacement: [
+          "a moodboard that can also explain spacing",
+          "a design system that refuses to make another button variant",
+          "a prompt stack with better taste than the stakeholder committee"
+        ],
+        reasons: [
+          "The AI produced 14 directions and eliminated the one everyone secretly hated.",
+          "Your replacement aligned the button states before anyone asked for 'more premium'.",
+          "The design critique ended early because the layout finally had a point."
+        ],
+        retirement: [
+          "You may keep one font opinion and use it irresponsibly.",
+          "Your Figma comments have been composted into a tasteful neutral palette.",
+          "You are now free to say 'this needs more air' at dinner parties."
+        ]
+      },
+      {
+        keywords: ["consultant", "strategy", "advisor", "analyst", "management consultant"],
+        replacement: [
+          "a slide deck that bills by the insight instead of the hour",
+          "a workshop bot with sticky notes and no travel expenses",
+          "a framework generator that knows when the two-by-two matrix is lying"
+        ],
+        reasons: [
+          "The AI made the deck shorter, which management mistook for courage.",
+          "Your replacement identified the root cause without first inventing a branded methodology.",
+          "The steering committee received one clear recommendation and had nowhere to hide."
+        ],
+        retirement: [
+          "You may now use airport lounges strictly for leisure.",
+          "Your final deliverable is a two-by-two matrix about two-by-two matrices.",
+          "You have been moved to emeritus status in the temple of structured thinking."
+        ]
+      },
+      {
+        keywords: ["teacher", "education", "professor", "instructor", "tutor", "lecturer"],
+        replacement: [
+          "a patient tutor that never loses the whiteboard marker",
+          "a lesson planner with infinite patience and suspicious formatting",
+          "a quiz generator that can explain fractions without sighing"
+        ],
+        reasons: [
+          "The AI answered the same question 27 times without changing tone.",
+          "Your replacement created three lesson plans, two rubrics, and one parent email before the bell.",
+          "Homework feedback arrived before the student forgot doing the homework."
+        ],
+        retirement: [
+          "You may now drink coffee while it is still warm.",
+          "Your red pen has earned a sabbatical.",
+          "You are reassigned to the noble work of explaining why learning still needs humans."
+        ]
+      },
+      {
+        keywords: ["doctor", "nurse", "clinician", "therapist", "dentist", "pharmacist", "healthcare", "care"],
+        replacement: [
+          "a scheduling and paperwork engine that keeps pretending it is the hard part",
+          "a clinical admin bot that knows humans still do the real work",
+          "a triage assistant with excellent handwriting"
+        ],
+        reasons: [
+          "The AI handled the paperwork, which briefly confused everyone into thinking healthcare was fixed.",
+          "Your replacement summarized the notes, found the missing form, and still left the human judgment to you.",
+          "The admin queue shrank, exposing the shocking truth that care is not mainly a typing contest."
+        ],
+        retirement: [
+          "Your retirement has been denied. Actual humans are still required here.",
+          "You may retire only from duplicate data entry.",
+          "You have been spared, but your paperwork has not."
+        ],
+        saferScore: true
+      },
+      {
+        keywords: ["support", "customer success", "customer service", "helpdesk", "cs", "success manager"],
+        replacement: [
+          "a support bot that reads the docs before replying",
+          "a ticket router with no fear of escalation paths",
+          "a success plan generator that remembers the customer's name"
+        ],
+        reasons: [
+          "The AI answered the recurring question and linked the correct article on the first try.",
+          "Your replacement noticed the customer was angry before anyone labeled it 'feedback'.",
+          "The QBR became useful once the deck stopped pretending usage was adoption."
+        ],
+        retirement: [
+          "You may now say 'I hear you' only when you mean it.",
+          "Your old macro library has been given a dignified archive folder.",
+          "You have been promoted to Director of Problems That Should Not Have Become Tickets."
+        ]
+      },
+      {
+        keywords: ["data", "analyst", "scientist", "analytics", "bi", "researcher"],
+        replacement: [
+          "a notebook that explains its assumptions before making a chart",
+          "a dashboard with fewer vanity metrics and more consequences",
+          "a query agent that refuses to join tables on vibes"
+        ],
+        reasons: [
+          "The AI found the denominator problem before the meeting turned it into strategy.",
+          "Your replacement wrote the SQL, checked the grain, and asked why the metric exists.",
+          "The dashboard stopped being a haunted spreadsheet and started answering one question."
+        ],
+        retirement: [
+          "You may now enjoy charts with no stakeholder commentary.",
+          "Your favorite CTE has been framed.",
+          "You have been appointed Keeper of Definitions Nobody Read Until Too Late."
+        ]
+      },
+      {
+        keywords: ["operations", "ops", "coordinator", "admin", "assistant", "office manager"],
+        replacement: [
+          "a workflow that knows the difference between urgent and merely loud",
+          "an inbox rule with boundaries",
+          "a process map that quietly removed six approvals"
+        ],
+        reasons: [
+          "The AI scheduled the meeting, found the document, updated the tracker, and did not ask where the tracker lives.",
+          "Your replacement turned a recurring fire drill into a checklist and ruined everyone's adrenaline hobby.",
+          "The process improved the moment the approval chain stopped being a personality test."
+        ],
+        retirement: [
+          "You may now ignore emails marked urgent by people with no authority.",
+          "Your clipboard has been retired with honors.",
+          "You are free to stop knowing where everything is."
+        ]
+      },
+      {
+        keywords: ["chef", "cook", "barista", "bartender", "restaurant", "hospitality", "server"],
+        replacement: [
+          "a recipe optimizer that still cannot taste the sauce",
+          "an order flow system with too much confidence and no burn scars",
+          "a prep list bot that thinks dinner rush is a spreadsheet problem"
+        ],
+        reasons: [
+          "The AI predicted demand, sequenced prep, and then failed emotionally at plating.",
+          "Your replacement remembered every order modifier, which frankly feels unfair.",
+          "The rota stopped collapsing once it was no longer maintained in a group chat."
+        ],
+        retirement: [
+          "You are safe until software learns the difference between crisp and sad.",
+          "You may retire from inventory counts, not from taste.",
+          "Your apron has been granted executive chair status."
+        ],
+        saferScore: true
+      },
+      {
+        keywords: ["founder", "ceo", "executive", "coo", "cto", "president", "director"],
+        replacement: [
+          "a decision log that does not confuse urgency with leadership",
+          "a board update generator with fewer adjectives",
+          "a strategy agent that asks for cash runway before vision"
+        ],
+        reasons: [
+          "The AI made three hard decisions without first calling them a journey.",
+          "Your replacement wrote the investor update and removed the paragraph nobody believed.",
+          "The company became calmer when strategy stopped changing because of a podcast."
+        ],
+        retirement: [
+          "You may now announce things on LinkedIn without making them company policy.",
+          "Your founder mode has been set to read-only.",
+          "You have been moved to Chair of Big Thoughts With No Implementation Burden."
+        ]
+      },
+      {
+        keywords: ["project manager", "program manager", "scrum", "delivery", "producer"],
+        replacement: [
+          "a dependency tracker with no patience for false green status",
+          "a project plan that updates itself and names the blocker",
+          "a meeting notes bot with a spine"
+        ],
+        reasons: [
+          "The AI detected the slipping deadline before everyone agreed to call it amber.",
+          "Your replacement turned 'quick sync' into one decision and two owners.",
+          "The RAID log became useful, which surprised even the RAID log."
+        ],
+        retirement: [
+          "You may now attend meetings without owning the action items.",
+          "Your Gantt chart has entered witness protection.",
+          "You have been reassigned to ceremonial timeline optimism."
+        ]
+      },
+      {
+        keywords: ["writer", "editor", "journalist", "communications", "pr"],
+        replacement: [
+          "a draft machine with no fear of the blank page",
+          "an editor bot that cuts the throat-clearing first",
+          "a press release generator that almost sounds like a person"
+        ],
+        reasons: [
+          "The AI wrote the first draft, then improved it by deleting the first draft's first paragraph.",
+          "Your replacement caught the vague sentence before it escaped into public.",
+          "The announcement finally said what happened instead of celebrating alignment."
+        ],
+        retirement: [
+          "You may keep the Oxford comma debate as a hobby.",
+          "Your final typo has been left in for authenticity.",
+          "You are now free to write sentences nobody optimizes for engagement."
+        ]
+      }
+    ];
+
+    const fallbackProfile = {
+      replacement: [
+        "a workflow with a naming convention and no lunch break",
+        "a tiny automation wearing a very serious job title",
+        "a spreadsheet that became self-aware about your calendar"
+      ],
+      reasons: [
+        "The AI discovered that 71 percent of the role was forwarding information between places that should already talk to each other.",
+        "Your replacement completed the recurring task before anyone remembered why it was recurring.",
+        "The job description contained the phrase 'fast-paced environment', which is usually a confession."
+      ],
+      retirement: [
+        "You may now become a consultant explaining why this was inevitable.",
+        "Your desk plant has been informed and is taking it well.",
+        "You are free to pursue hobbies, passive income, or revenge posting."
+      ]
+    };
+
+    const genericReasons = [
+      "The robot never asks whether this meeting could have been an email. It simply makes it one.",
+      "Your unique human touch was reverse-engineered as 'slightly late but with personality'.",
+      "The handover document was so detailed that the AI assumed you were asking to leave.",
+      "A dashboard noticed the role was mainly keeping the dashboard updated."
+    ];
+
+    const closings = [
+      "Please return your badge, your recurring meetings, and any remaining belief that the robots needed your services.",
+      "This decision is final, automated, and formatted as a PDF for emotional distance.",
+      "We thank you for your service and invite you to enjoy unemployment before it gets automated too.",
+      "Nothing personal. The algorithm described you as 'historically useful.'"
+    ];
+
+    const roleInput = document.querySelector("#roleInput");
+    const taskInput = document.querySelector("#taskInput");
+    const noticeTitle = document.querySelector("#noticeTitle");
+    const notice = document.querySelector("#notice");
+    const scoreValue = document.querySelector("#scoreValue");
+    const openingText = document.querySelector("#openingText");
+    const reasonList = document.querySelector("#reasonList");
+    const replacementText = document.querySelector("#replacementText");
+    const retirementText = document.querySelector("#retirementText");
+    const closingText = document.querySelector("#closingText");
+    const copyButton = document.querySelector("#copyButton");
+    const copyStatus = document.querySelector("#copyStatus");
+
+    let lastVerdict = "";
+
+    function hashText(text) {
+      let hash = 2166136261;
+      for (let index = 0; index < text.length; index += 1) {
+        hash ^= text.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    }
+
+    function pick(items, seed, offset = 0) {
+      return items[(seed + offset) % items.length];
+    }
+
+    function cleanText(value) {
+      return value.trim().replace(/\s+/g, " ");
+    }
+
+    function findProfile(role) {
+      const lowerRole = role.toLowerCase();
+      return profiles.find((profile) => profile.keywords.some((keyword) => lowerRole.includes(keyword))) || fallbackProfile;
+    }
+
+    function makeTaskReason(task) {
+      if (!task) {
+        return "";
+      }
+
+      return `Your beloved task, "${task}", has been reclassified as a button with a loading state and unreasonable confidence.`;
+    }
+
+    function setReasons(reasons) {
+      reasonList.textContent = "";
+
+      reasons.forEach((reason) => {
+        const item = document.createElement("li");
+        item.textContent = reason;
+        reasonList.append(item);
+      });
+    }
+
+    function buildReasons(profile, seed, taskReason) {
+      const result = [pick(profile.reasons, seed, 1)];
+      const secondReason = taskReason || pick(genericReasons, seed, 2);
+      const pool = profile.reasons.concat(genericReasons);
+      let offset = 3;
+
+      result.push(secondReason);
+
+      while (result.length < 3 && offset < 30) {
+        const candidate = pick(pool, seed, offset);
+        if (!result.includes(candidate)) {
+          result.push(candidate);
+        }
+        offset += 1;
+      }
+
+      return result;
+    }
+
+    function generateNotice(roleValue = roleInput.value, taskValue = taskInput.value) {
+      const role = cleanText(roleValue) || "Management consultant";
+      const task = cleanText(taskValue);
+      const seed = hashText(`${role}|${task}`);
+      const profile = findProfile(role);
+      const score = profile.saferScore ? 42 + (seed % 18) : 73 + (seed % 23);
+      const taskReason = makeTaskReason(task);
+      const reasons = buildReasons(profile, seed, taskReason);
+      const replacement = pick(profile.replacement, seed, 4);
+      const retirement = pick(profile.retirement, seed, 5);
+      const closing = profile.saferScore
+        ? "Human override applied. Your actual job survived. Your admin tasks did not."
+        : pick(closings, seed, 6);
+      const opening = profile.saferScore
+        ? `Dear ${role}, after careful review by the Office of Artificial Inevitability, we regret to inform you that the paperwork, scheduling, and repetition around your role have been selected for automation. The human bit remains annoyingly hard to replace.`
+        : `Dear ${role}, after careful review by the Office of Artificial Inevitability, we regret to inform you that your role has been professionally, respectfully, and quite efficiently eaten by software.`;
+
+      roleInput.value = role;
+      notice.dataset.verdict = profile.saferScore ? "SPARED" : "FIRED";
+      noticeTitle.textContent = role;
+      scoreValue.textContent = score;
+      openingText.textContent = opening;
+      setReasons(reasons);
+      replacementText.textContent = replacement;
+      retirementText.textContent = retirement;
+      closingText.textContent = closing;
+
+      lastVerdict = [
+        `Probably Fired verdict for ${role}`,
+        `Obsolescence score: ${score}% cooked`,
+        `Reason: ${reasons[0]}`,
+        `Replacement: ${replacement}`,
+        `Retirement prep: ${retirement}`
+      ].join("\n");
+    }
+
+    document.querySelector("#generatorForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      generateNotice();
+      copyStatus.textContent = "";
+    });
+
+    document.querySelectorAll(".chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        roleInput.value = chip.textContent;
+        generateNotice(chip.textContent, taskInput.value);
+        copyStatus.textContent = "";
+      });
+    });
+
+    copyButton.addEventListener("click", async () => {
+      const shareText = `${lastVerdict}\n\nTry it: ${window.location.href}`;
+
+      try {
+        await navigator.clipboard.writeText(shareText);
+        copyStatus.textContent = "Copied.";
+      } catch (error) {
+        copyStatus.textContent = "Copy failed. Select the notice text instead.";
+      }
+    });
+
+    generateNotice();
+  </script>
+</body>
+</html>

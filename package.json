@@ -1,0 +1,17 @@
+{
+  "name": "probably-fired",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A deeply unserious AI redundancy notice generator.",
+  "scripts": {
+    "dev": "python3 -m http.server 5173",
+    "check": "node scripts/check-inline-js.cjs"
+  },
+  "keywords": [
+    "ai",
+    "linkedin",
+    "static-site"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {}
+}
