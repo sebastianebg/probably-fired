@@ -3,6 +3,7 @@
 Static LinkedIn gimmick tool for discovering exactly why your job has been automated.
 
 Live: https://probably-fired.vercel.app
+Project: https://github.com/users/sebastianebg/projects/2
 
 ## What It Does
 
